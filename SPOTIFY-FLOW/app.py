@@ -18,7 +18,15 @@ def create_app():
     def retrieval():
         try:
             requestJson = json.loads(request.data)
-            return requestJson
+            liked_songs = requestJson['liked_songs']
+            disliked_songs = requestJson['disliked_songs']
+            liked_song_ids = "Liked song ID's: "
+            disliked_song_ids = "Disliked song ID's: "
+            for i in range(len(liked_songs)):
+                liked_song_ids += liked_songs[i] + ", "
+            for i in range(len(disliked_songs)):
+                disliked_song_ids += disliked_songs[i] + ", "
+            return liked_song_ids + '\n' + disliked_song_ids
         except Exception as e:
             errorMessage = "Error processing input: {}".format(e)
             return errorMessage
