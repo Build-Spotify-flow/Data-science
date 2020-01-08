@@ -3,8 +3,8 @@ from joblib import load
 import pandas as pd
 import json
 
-# pipeline = load('MODEL/model.joblib')
-
+pipelineScaler = load('Models/scaler.joblib')
+pipelineNN = load('Models/NNmodel.joblib')
 
 def create_app():
     """Create and configure a basic Flask app"""
@@ -18,15 +18,36 @@ def create_app():
     def retrieval():
         try:
             requestJson = json.loads(request.data)
-            liked_songs = requestJson['liked_songs']
-            disliked_songs = requestJson['disliked_songs']
-            liked_song_ids = "Liked song ID's: "
-            disliked_song_ids = "Disliked song ID's: "
-            for i in range(len(liked_songs)):
-                liked_song_ids += liked_songs[i] + ", "
-            for i in range(len(disliked_songs)):
-                disliked_song_ids += disliked_songs[i] + ", "
-            return liked_song_ids + '\n' + disliked_song_ids
+            track_id = requestJson['track_id']
+            acousticness = float(requestJson['acousticness'])
+            danceability = float(requestJson['danceability'])
+            duration_ms = int(requestJson['duration_ms'])
+            energy = float(requestJson['energy'])
+            instrumentalness = float(requestJson['instrumentalness'])
+            danceability = float(requestJson['danceability'])
+            key = int(requestJson['key'])
+            liveness = float(requestJson['liveness'])
+            loudness = float(requestJson['loudness'])
+            mode = int(requestJson['mode'])
+            speechiness = float(requestJson['speechiness'])
+            tempo = float(requestJson['tempo'])
+            time_signature = int(requestJson['time_signature'])
+            valence = float(requestJson['valence'])
+            popularity = int(requestJson['popularity'])
+            predict_thing = pd.DataFrame(
+                columns=['acousticness', 'danceability', 'duration_ms',
+                         'energy', 'instrumentalness', 'key', 'liveness',
+                         'loudness', 'mode', 'speechiness', 'tempo',
+                         'time_signature', 'valence', 'popularity'],
+                data=[[acousticness, danceability, duration_ms,
+                      energy, instrumentalness, key, liveness,
+                      loudness, mode, speechiness, tempo, 
+                      time_signature, valence, popularity]]
+                )
+            predictionScaled = pipelineScaler.transform(predict_thing)
+            prediction = pipelineNN.query(predictionScaled, k=11)
+            indices = prediction[1][0].tolist()[1:]
+            return str(indices)
         except Exception as e:
             errorMessage = "Error processing input: {}".format(e)
             return errorMessage
