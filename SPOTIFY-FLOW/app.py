@@ -47,7 +47,12 @@ def create_app():
             predictionScaled = pipelineScaler.transform(predict_thing)
             prediction = pipelineNN.query(predictionScaled, k=11)
             indices = prediction[1][0].tolist()[1:]
-            return str(indices)
+            outputData = {
+                "radar_chart": "not ready yet",
+                "recommended_song_indices": []
+            }
+            outputData['recommended_song_indices'] = indices
+            return json.dumps(outputData)
         except Exception as e:
             errorMessage = "Error processing input: {}".format(e)
             return errorMessage
