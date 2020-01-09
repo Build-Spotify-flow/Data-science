@@ -1,7 +1,7 @@
 # Data-science
 ETL pipeline + Recommender API
 
-**Please note: The Flask app does not work based on this documentation yet!**
+**Please note: The radar chart does not work yet!**
 
 ## Usage (Production)
 
