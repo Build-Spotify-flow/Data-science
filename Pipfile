@@ -11,9 +11,6 @@ gunicorn = "*"
 joblib = "*"
 pandas = "*"
 scikit-learn = "*"
-plotly = "*"
-psutil = "*"
-requests = "*"
 
 [requires]
 python_version = "3.7"
