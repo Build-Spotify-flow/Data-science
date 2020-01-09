@@ -1,7 +1,7 @@
 # Data-science
 ETL pipeline + Recommender API
 
-**Please note: The radar chart does not work yet!**
+**Please note: A toggle to enable/disable the radar chart is coming soon.**
 
 ## Usage (Production)
 
