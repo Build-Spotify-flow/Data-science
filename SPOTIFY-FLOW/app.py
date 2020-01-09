@@ -50,8 +50,7 @@ def create_app():
                       time_signature, valence, popularity]]
                 )
             # Generate the radar chart as a base64 string
-            # radar_base64 = radar_chart(predict_thing)
-            radar_base64 = "not ready yet"
+            radar_base64 = radar_chart(predict_thing)
             # Scale the dataframe from the pickled model
             predict_thing_scaled = pipeline_scaler.transform(predict_thing)
             # Run the nearest neighbor model to output the indices

@@ -1,1 +1,1 @@
-web: gunicorn SPOTIFY-FLOW:APP -t 120
+web: gunicorn SPOTIFY-FLOW:APP
