@@ -1,0 +1,11 @@
+dependencies:
+  - flask
+  - gunicorn
+  - joblib
+  - pandas
+  - scikit-learn
+  - plotly
+  - plotly-orca
+  - pillow
+  - psutil
+  - requests
