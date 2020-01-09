@@ -12,20 +12,20 @@ Send a POST request to `https://spotify-flow-ds.herokuapp.com/input` passing in 
 ```
 {
     "track_id": "track id",
-    "acousticness": #,
-    "danceability": #,
-    "duration_ms": #,
-    "energy": #,
-    "instrumentalness": #,
-    "key": #,
-    "liveness": #,
-    "loudness": #,
-    "mode": #,
-    "speechiness": #,
-    "tempo": #,
-    "time_signature": #,
-    "valence": #,
-    "popularity": #
+    "acousticness": (float),
+    "danceability": (float),
+    "duration_ms": (int),
+    "energy": (float),
+    "instrumentalness": (float),
+    "key": (int),
+    "liveness": (float),
+    "loudness": (float),
+    "mode": (int),
+    "speechiness": (float),
+    "tempo": (float),
+    "time_signature": (int),
+    "valence": (float),
+    "popularity": (int)
 }
 ```
 

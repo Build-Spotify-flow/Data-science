@@ -4,9 +4,10 @@ import pandas as pd
 import json
 import sqlite3
 
-pipelineScaler = load('Models/scaler.joblib')
-pipelineNN = load('Models/NNmodel.joblib')
+pipeline_scaler = load('Models/scaler.joblib')
+pipeline_NN = load('Models/NNmodel.joblib')
 sqldb = 'Database/Songsdb.sqlite3'
+
 
 def create_app():
     """Create and configure a basic Flask app"""
@@ -27,7 +28,6 @@ def create_app():
             duration_ms = int(requestJson['duration_ms'])
             energy = float(requestJson['energy'])
             instrumentalness = float(requestJson['instrumentalness'])
-            danceability = float(requestJson['danceability'])
             key = int(requestJson['key'])
             liveness = float(requestJson['liveness'])
             loudness = float(requestJson['loudness'])
@@ -45,35 +45,34 @@ def create_app():
                          'time_signature', 'valence', 'popularity'],
                 data=[[acousticness, danceability, duration_ms,
                       energy, instrumentalness, key, liveness,
-                      loudness, mode, speechiness, tempo, 
+                      loudness, mode, speechiness, tempo,
                       time_signature, valence, popularity]]
-                )            
+                )
             # Scale the dataframe from the pickled model
-            predictionScaled = pipelineScaler.transform(predict_thing)
+            predict_thing_scaled = pipeline_scaler.transform(predict_thing)
             # Run the nearest neighbor model to output the indices
             # of the 10 recommended songs
             # k=11 because the first value is the input, which we
             # disregard.
-            prediction = pipelineNN.query(predictionScaled, k=11)
+            prediction = pipeline_NN.query(predict_thing_scaled, k=11)
             # Make the indices array its own variable
             indices = prediction[1][0].tolist()[1:]
             # Fetch track id's from the SQL database
             conn = sqlite3.connect(sqldb)
             curs = conn.cursor()
-            allData = curs.execute('SELECT track_id from songs;').fetchall()
+            all_data = curs.execute('SELECT track_id from songs;').fetchall()
             curs.close()
             # Convert indices to ID's
-            indicesIDs = list(map(lambda x, y: y[0], indices, allData)) 
+            indices_id = list(map(lambda x, y: y[0], indices, all_data))
             # Prepare the output data
-            outputData = {
+            output_data = {
                 "radar_chart": "not ready yet",
-                "recommended_song_ids": []
+                "recommended_song_ids": indices_id
             }
-            outputData['recommended_song_ids'] = indicesIDs
             # Return the JSON
-            return json.dumps(outputData)
+            return json.dumps(output_data)
         except Exception as e:
-            errorMessage = "Error processing input: {}".format(e)
-            return errorMessage
+            error_message = "Error processing input: {}".format(e)
+            return error_message
 
     return app
