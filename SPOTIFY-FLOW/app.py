@@ -3,7 +3,7 @@ from joblib import load
 import pandas as pd
 import json
 import sqlite3
-from .image_parser import radar_chart
+# from .image_parser import radar_chart
 
 pipeline_scaler = load('Models/scaler.joblib')
 pipeline_NN = load('Models/NNmodel.joblib')
@@ -50,7 +50,7 @@ def create_app():
                       time_signature, valence, popularity]]
                 )
             # Generate the radar chart as a base64 string
-            radar_base64 = radar_chart(predict_thing)
+            radar_base64 = "not ready yet"
             # Scale the dataframe from the pickled model
             predict_thing_scaled = pipeline_scaler.transform(predict_thing)
             # Run the nearest neighbor model to output the indices
@@ -66,7 +66,7 @@ def create_app():
             all_data = curs.execute('SELECT track_id from songs;').fetchall()
             curs.close()
             # Convert indices to ID's
-            indices_id = list(map(lambda x, y: y[0], indices, all_data))
+            indices_id = [all_data[x][0] for x in indices]
             # Prepare the output data
             output_data = {
                 "radar_chart": radar_base64,
