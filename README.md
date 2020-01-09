@@ -61,6 +61,8 @@ To test the endpoint, create and run the following python code, replacing exampl
 ```
 import requests
 import json
+localURL = 'http://127.0.0.1:5000/input'
+herokuURL = 'https://spotify-flow-ds.herokuapp.com/input'
 dictToSend = {
     "track_id": "2RM4jf1Xa9zPgMGRDiht8O",
     "acousticness": 0.00582,
@@ -78,6 +80,6 @@ dictToSend = {
     "valence": 0.118,
     "popularity": 15
 }
-res = requests.post('http://127.0.0.1:5000/input', data=json.dumps(dictToSend))
+res = requests.post(localURL, data=json.dumps(dictToSend))
 print ('RESPONSE FROM SERVER\n' + res.text)
 ```
