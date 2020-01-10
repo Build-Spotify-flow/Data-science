@@ -1,4 +1,3 @@
-'''
 import base64
 import plotly.express as px
 import requests # necessary for image generation
@@ -21,4 +20,3 @@ def radar_chart(radar_dataframe):
     img_PIL.save(buffered, format="png")
     img_str = str(base64.b64encode(buffered.getvalue()).decode("utf-8"))
     return img_str
-    '''

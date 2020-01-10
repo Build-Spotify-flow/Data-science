@@ -1,0 +1,5 @@
+name: spotify-flow-ds
+channels:
+  - plotly
+dependencies:
+  - plotly-orca=1.2.1=1
