@@ -1,22 +1,32 @@
+from math import pi
 import base64
-import plotly.express as px
-import requests # necessary for image generation
-from io import BytesIO
-from PIL import Image
+import io
+import matplotlib.pyplot as plt
 
 def radar_chart(radar_dataframe):
     # Extract the 5 features for the radar chart
-    features = ['danceability', 'energy', 'instrumentalness', 'speechiness', 'valence']
+    features = ['danceability', 'energy', 'instrumentalness', 'speechiness',
+                'valence']
     plotter = radar_dataframe[features]
     # Create the radar chart
-    fig = px.line_polar(plotter, r=plotter.values[0], theta=features, line_close=True,
-                    template="plotly_dark", range_r=[0, 1])
-    fig.update_traces(fill='toself')
+    with plt.style.context('default'):
+      fig = plt.figure()
+      categories=list(plotter)
+      N = len(categories)
+      values=plotter.loc[0].values.flatten().tolist()
+      values += values[:1]
+      angles = [n / float(N) * 2 * pi for n in range(N)]
+      angles += angles[:1]
+      ax = plt.subplot(111, polar=True)
+      plt.xticks(angles[:-1], categories, color='black', size=10)
+      plt.ylim(0,1)
+      ax.plot(angles, values, linewidth=1, linestyle='solid', c='black')
+      ax.fill(angles, values, '#1DB954', alpha=0.5)
+      ax.set_facecolor('xkcd:grey')
     # Convert the radar chart to a bytes object
-    img_bytes = fig.to_image(format="png")
+    pic_IObytes = io.BytesIO()
+    fig.savefig(pic_IObytes,  format='png')
+    pic_IObytes.seek(0)
     # Convert bytes object to base64 string that can parse to an image
-    img_PIL = Image.open(BytesIO(img_bytes))
-    buffered = BytesIO()
-    img_PIL.save(buffered, format="png")
-    img_str = str(base64.b64encode(buffered.getvalue()).decode("utf-8"))
-    return img_str
+    pic_hash = base64.b64encode(pic_IObytes.read()).decode('utf-8')
+    return str(pic_hash)
